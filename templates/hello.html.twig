@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	<h1>Bienvenu sur mon site !</h1>
+	<p>
+		Je m'appelle
+		{{ formateur.prenom }}
+		{{formateur.nom}}
+		et j'ai
+		{{ formateur.age }}
+		ans.</p>
+{% endblock %}
