@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ProductType extends AbstractType
 {
@@ -24,19 +25,24 @@ class ProductType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom du produit',
-                'attr' => ['placeholder' => 'Tapez le nom du produit']
+                'attr' => ['placeholder' => 'Tapez le nom du produit'],
+                'required' => false,
+                'constraints' => new NotBlank(['message' => "Le produit doit avoir un nom "])
             ])
             ->add('shortDescription', TextareaType::class, [
                 'label' => 'Description courte',
-                'attr' => ['placeholder' => 'Tapez une description']
+                'attr' => ['placeholder' => 'Tapez une description'],
+                'required' => false
             ])
             ->add('price', PriceType::class, [
                 'label' => 'Prix du produit',
-                'attr' => ['placeholder' => 'Entrez le prix du produit']
+                'attr' => ['placeholder' => 'Entrez le prix du produit'],
+                'required' => false
             ])
             ->add('mainPicture', UrlType::class, [
                 'label' => 'Image du produit',
-                'attr' => ['placeholder' => 'Tapez une URL d\'image']
+                'attr' => ['placeholder' => 'Tapez une URL d\'image'],
+                'required' => false
             ])
             ->add('category', EntityType::class, [
                 'label' => 'Catégorie',
