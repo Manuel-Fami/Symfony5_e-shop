@@ -2,3 +2,6 @@ twig:
     default_path: '%kernel.project_dir%/templates'
     form_themes:
         - bootstrap_4_layout.html.twig
+# Création de variable global qui permet d'accéder au repository, notament pour créer la nav bar dynamiquement
+    globals:
+        categoryRepository: "@App\\Repository\\CategoryRepository"
