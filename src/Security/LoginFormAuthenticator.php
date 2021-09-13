@@ -3,11 +3,14 @@
 namespace App\Security;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class LoginFormAuthenticator extends AbstractGuardAuthenticator
@@ -32,22 +35,35 @@ class LoginFormAuthenticator extends AbstractGuardAuthenticator
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        return $userProvider->loadUserByUsername($credentials['email']);
+
+        try {
+            return $userProvider->loadUserByUsername($credentials['email']);
+        } catch (UsernameNotFoundException $e) {
+            throw new AuthenticationException("Cette adresse n'est pas connue");
+        }
     }
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return $this->encoder->isPasswordValid($user, $credentials['password']);
+
+        $isValid = $this->encoder->isPasswordValid($user, $credentials['password']);
+
+        if (!$isValid) {
+            throw new AuthenticationException("Le mot de passe est incorrect");
+        }
+
+        return true;
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        // todo
+        // On ne fait rien pour rester sur la page de connexion
+        $request->attributes->set(Security::AUTHENTICATION_ERROR, $exception);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
     {
-        dd("Success");
+        return new RedirectResponse('/');
     }
 
     public function start(Request $request, AuthenticationException $authException = null)
