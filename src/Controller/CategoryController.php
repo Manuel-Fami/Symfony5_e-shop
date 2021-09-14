@@ -13,10 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * @IsGranted("ROLE_ADMIN", message= "Vous n'avez pas le droit d'accéder à cette page")
  *
  */
 class CategoryController extends AbstractController
@@ -54,6 +54,20 @@ class CategoryController extends AbstractController
     public function edit($id, CategoryRepository $categoryRepository, Request $request, EntityManagerInterface $em, SluggerInterface $slugger)
     {
         $category = $categoryRepository->find($id);
+
+        if (!$category) {
+            throw new NotFoundHttpException("Cette catégorie n'éxiste pas");
+        }
+
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute("security_login");
+        }
+
+        if ($user !== $category->getOwner()) {
+            throw new AccessDeniedHttpException("Vous n'êtes pas le créateur de cette catégorie");
+        }
 
         $form = $this->createForm(CategoryType::class, $category);
 
