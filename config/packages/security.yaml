@@ -18,9 +18,22 @@ security:
             anonymous: true
             lazy: true
             provider: app_user_provider
+
+#------------ Permet d'appeler le LoginFormAuthenticator construit étape par étape, à la main 
+#------------ -> conexion + message erreur personnalisé ok 
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
+            
+# ----------- Fonctionnalité donné par symfony qui permet de se passer du LoginFormAuthenticator, tout est fait automatiquement
+            # form_login:
+            #     login_path: security_login
+            #     check_path: security_login
+            #     username_parameter: login[email]
+            #     password_parameter: login[password]
+
+            logout:
+                path: security_logout
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
