@@ -3,11 +3,12 @@
 namespace App\Controller;
 
 use App\Repository\ProductRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CartController extends AbstractController
 {
@@ -38,6 +39,13 @@ class CartController extends AbstractController
 
         //6. Enregistrer le tableau mis à jour dans la session
         $session->set('cart', $cart);
+
+        /** @var FlashBag */
+        $flashBag = $session->getBag('flashes');
+
+        $flashBag->add('success', "Le produit a bien été ajouté au panier !");
+
+        dd($flashBag->get('success'));
 
         //Permet de supprimer la session - remise à zéro
         // $request->getSession()->remove('cart');
