@@ -12,7 +12,7 @@ class CategoryVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, ['CAN_EDIT'])
+        return in_array($attribute, ['CAN_EDIT', 'POST_VIEW'])
             && $subject instanceof \App\Entity\Category;
     }
 
