@@ -21,16 +21,16 @@ security:
 
 #------------ Permet d'appeler le LoginFormAuthenticator construit étape par étape, à la main 
 #------------ -> conexion + message erreur personnalisé ok 
-            guard:
-                authenticators:
-                    - App\Security\LoginFormAuthenticator
+            # guard:
+            #     authenticators:
+            #         - App\Security\LoginFormAuthenticator
             
 # ----------- Fonctionnalité donné par symfony qui permet de se passer du LoginFormAuthenticator, tout est fait automatiquement
-            # form_login:
-            #     login_path: security_login
-            #     check_path: security_login
-            #     username_parameter: login[email]
-            #     password_parameter: login[password]
+            form_login:
+                login_path: security_login
+                check_path: security_login
+                username_parameter: login[email]
+                password_parameter: login[password]
 
             logout:
                 path: security_logout
@@ -46,5 +46,5 @@ security:
 
 # Gérer les accès aux pages directement ci-dessous ou utiliser la notation "isGranted"
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
