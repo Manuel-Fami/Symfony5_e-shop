@@ -39,14 +39,15 @@ class CartController extends AbstractController
 
         //6. Enregistrer le tableau mis à jour dans la session
         $session->set('cart', $cart);
+        // dd($session);
 
-        dd($cart);
-        // /** @var FlashBag */
-        // $flashBag = $session->getBag('flashes');
+        /** @var FlashBag */
+        $flashBag = $session->getBag('flashes');
 
-        // $flashBag->add('success', "Le produit a bien été ajouté au panier !");
+        $flashBag->add('success', "Le produit a bien été ajouté au panier !");
 
-        // dd($flashBag->get('success'));
+        // dump($flashBag->get('success'));
+        // dd($flashBag);
 
         //Permet de supprimer la session - remise à zéro
         // $request->getSession()->remove('cart');
