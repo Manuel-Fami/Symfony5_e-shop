@@ -20,9 +20,20 @@
 	<body>
 		{% include "shared/_navBar.html.twig" %}
 
-		<div class="container pt-5"> {% block body %}{% endblock %}
-			</div>
+		<div
+			class="container pt-5">
+			{# Affichage du message flash #}
+			{% for rubrique, messages in app.flashes %}
+				<div class="alert alert-{{rubrique}}">
+					{% for message in messages %}
+						<p>{{ message }}</p>
+					{% endfor %}
+				</div>
+			{% endfor %}
+			{# Fin du affichage message flash #}
+			{% block body %}{% endblock %}
+		</div>
 
-		</body>
-		{% block javascripts %}{% endblock %}
-	</html>
+	</body>
+	{% block javascripts %}{% endblock %}
+</html>
