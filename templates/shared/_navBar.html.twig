@@ -14,7 +14,15 @@
 				{% endfor %}
 			</ul>
 
-			<ul class="navbar-nav">
+			<ul
+				class="navbar-nav">
+				{# ---- Lien panier achat ----- #}
+				<li class="nav-item">
+					<a href="{{ path('cart_show') }}" class="nav-link">
+						<i class="fas fa-shopping-cart"></i>
+						Panier</a>
+				</li>
+
 				{% if app.user %}
 					<li class="nav-item">
 						<a href="{{ path('security_logout') }}" class="btn btn-danger">Logout</a>
