@@ -6,7 +6,6 @@ use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class CartService
-
 {
     protected $session;
     protected $productRepository;
@@ -16,11 +15,24 @@ class CartService
         $this->session = $session;
         $this->productRepository = $productRepository;
     }
+
+    // Refactoring pour récupérer la cart panier
+    protected function getCart(): array
+    {
+        return $this->session->get('cart', []);
+    }
+
+    //Refactoring pour sauvegarder la carte panier
+    protected function saveCart(array $cart)
+    {
+        $this->session->set('cart', $cart);
+    }
+
     public function add(int $id)
     {
         //1. Retrouver le panier dans la session (sous forme de tableau)
         //2. Si il n'existe pas encore, alors prendre un tableau vide
-        $cart = $this->session->get('cart', []);
+        $cart = $this->getCart();
 
         //3. Voir si le produit ($id) existe déjà dans le tableau
         //4. Si c'est le cas, simplement augmenter la quantité
@@ -32,24 +44,24 @@ class CartService
         }
 
         //6. Enregistrer le tableau mis à jour dans la session
-        $this->session->set('cart', $cart);
+        $this->saveCart($cart);
         // dd($session);
     }
 
     // ---- supprimer un produit au panier -----
     public function remove(int $id)
     {
-        $cart = $this->session->get('cart', []);
+        $cart = $this->getCart();
 
         unset($cart[$id]);
 
-        $this->session->set('cart', $cart);
+        $this->saveCart($cart);
     }
 
     // ----- décrémenté le panier -----
     public function decrement(int $id)
     {
-        $cart = $this->session->get('cart', []);
+        $cart = $this->getCart();
 
         if (!array_key_exists($id, $cart)) {
             return;
@@ -64,7 +76,7 @@ class CartService
         //Si panier + de 1 alors décrémenté
         $cart[$id]--;
 
-        $this->session->set('cart', $cart);
+        $this->saveCart($cart);
     }
 
     // -------- Calcul du total du panier -------
@@ -72,7 +84,7 @@ class CartService
     {
         $total = 0;
 
-        foreach ($this->session->get('cart', []) as $id => $qty) {
+        foreach ($this->getCart() as $id => $qty) {
             $product = $this->productRepository->find($id);
 
             if (!$product) {
@@ -89,7 +101,7 @@ class CartService
     {
         $detailedCart = [];
 
-        foreach ($this->session->get('cart', []) as $id => $qty) {
+        foreach ($this->getCart() as $id => $qty) {
             $product = $this->productRepository->find($id);
 
             if (!$product) {
