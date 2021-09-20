@@ -36,6 +36,38 @@ class CartService
         // dd($session);
     }
 
+    // ---- supprimer un produit au panier -----
+    public function remove(int $id)
+    {
+        $cart = $this->session->get('cart', []);
+
+        unset($cart[$id]);
+
+        $this->session->set('cart', $cart);
+    }
+
+    // ----- décrémenté le panier -----
+    public function decrement(int $id)
+    {
+        $cart = $this->session->get('cart', []);
+
+        if (!array_key_exists($id, $cart)) {
+            return;
+        }
+
+        //Si panier est à 1 alors suppirmer
+        if ($cart[$id] === 1) {
+            $this->remove($id);
+            return;
+        }
+
+        //Si panier + de 1 alors décrémenté
+        $cart[$id]--;
+
+        $this->session->set('cart', $cart);
+    }
+
+    // -------- Calcul du total du panier -------
     public function getTotal(): int
     {
         $total = 0;
