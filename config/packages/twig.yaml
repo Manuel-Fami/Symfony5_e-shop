@@ -5,3 +5,4 @@ twig:
 # Création de variable global qui permet d'accéder au repository, notament pour créer la nav bar dynamiquement
     globals:
         categoryRepository: "@App\\Repository\\CategoryRepository"
+        cartService: "@App\\Cart\\CartService"
