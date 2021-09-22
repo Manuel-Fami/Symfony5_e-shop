@@ -62,7 +62,7 @@ class AppFixtures extends Fixture
                 $product = new Product;
                 $product->setName("Produit n°$p")
                     ->setPrice($faker->price(4000, 20000))
-                    ->setSlug("produit-n-$p")
+                    ->setSlug("produit-n-$c-$p")
                     ->setCategory($category)
                     ->setShortDescription($faker->paragraph())
                     ->setMainPicture($faker->imageUrl(400, 400, true));
